@@ -1,10 +1,10 @@
 import {Button, Input,Form} from 'semantic-ui-react';
 import Layout from './components/Layout';
 
-function App() {
+function Homepage() {
   return (
     <Layout>
-      <div className="App" style={{marginTop:'20px'}}>
+      <div className="Homepage" style={{marginTop:'20px'}}>
         <div class="ui huge header">Homepage</div>
         <Form>
           <div class="ui stacked segment">
@@ -29,4 +29,4 @@ function App() {
   );
 }
 
-export default App;
+export default Homepage;

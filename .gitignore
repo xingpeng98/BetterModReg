@@ -1,3 +1,4 @@
 .vscode
 2_deploy_contracts_test.js
 test_students.js
+node_modules
