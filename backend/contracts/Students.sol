@@ -8,6 +8,7 @@ contract Students {
     // TODO: Add events for bidding etc.
     
     struct student {
+        address addr;
         string name;
         string username;
         string password;
@@ -18,12 +19,11 @@ contract Students {
         uint256 totalPoints;
         uint256 remainingPoints;
         mapping(string => uint256) modulePoints;
-        string[] modulesBidded;
-        bool created;
     }
     
     uint256 public numStudents = 0;
-    mapping(string => student) public students;
+    mapping(uint256 => student) public students;
+    mapping(string => uint8) public createdStudents;
 
     function addStudent(
         string memory name,
@@ -36,10 +36,11 @@ contract Students {
         uint256 totalPoints
     ) public payable {
         // require student not already added
-        require(!students[username].created, "Student already added");
+        require(createdStudents[username] != 0, "Student already added");
 
         // new student object
         student memory newStudent = student(
+            tx.origin,
             name,
             username,
             password,
@@ -48,26 +49,33 @@ contract Students {
             major,
             minor,
             totalPoints,
-            totalPoints,
-            new string[](0),
-            true
+            totalPoints
         );
         
+        students[numStudents] = newStudent;
         numStudents++;
-        students[username] = newStudent;
     }
 
     /** Utility functions */
-    function bidMod(string memory username, string memory moduleCode, uint256 points) public payable {
+    function bidMod(uint256 id, string memory moduleCode, uint256 points) public payable {
         // rebidding penalty to be checked by modreg system (or i can put a function here 
         // in this contract to check)
-        require(points < students[username].remainingPoints, "Not enough points");
-        if (students[username].modulePoints[moduleCode] == 0) {
-            students[username].modulesBidded.push(moduleCode);
+        require(points < students[id].remainingPoints, "Not enough points");
+        if (students[id].modulePoints[moduleCode] == 0) {
+            students[id].modulePoints[moduleCode] = points;
+            students[id].remainingPoints = students[id].remainingPoints - points;
+        } else {
+            students[id].remainingPoints = students[id].remainingPoints + students[id].modulePoints[moduleCode] - points;
+            students[id].modulePoints[moduleCode] = points;
         }
-        students[username].modulePoints[moduleCode] = points;
-        students[username].remainingPoints = students[username].remainingPoints - points;
-    } 
+    }
+
+    function unbidMod(uint256 id, string memory moduleCode) public payable {
+        require(students[id].modulePoints[moduleCode] > 0, "Cannot unbid a module that you have not bidded.");
+        students[id].remainingPoints = students[id].remainingPoints + students[id].modulePoints[moduleCode];
+        students[id].modulePoints[moduleCode] = 0;
+
+    }
 
     /** Getters */
     // TODO: Add some form of restriction for all calls
@@ -76,40 +84,40 @@ contract Students {
         return numStudents;
     }
 
-    function get_name(string memory username) public view returns(string memory) {
-        return students[username].name;
+    function get_address(uint256 id) public view returns(address) {
+        return students[id].addr;
     }
 
-    function get_password(string memory username) public view returns(string memory) {
-        return students[username].password;
+    function get_name(uint256 id) public view returns(string memory) {
+        return students[id].name;
     }
 
-    function get_seniority(string memory username) public view returns(uint8) {
-        return students[username].seniority;
+    function get_password(uint256 id) public view returns(string memory) {
+        return students[id].password;
     }
 
-    function get_major(string memory username) public view returns(string memory) {
-        return students[username].major;
+    function get_seniority(uint256 id) public view returns(uint8) {
+        return students[id].seniority;
     }
 
-    function get_minor(string memory username) public view returns(string memory) {
-        return students[username].minor;
+    function get_major(uint256 id) public view returns(string memory) {
+        return students[id].major;
     }
 
-    function get_totalPoints(string memory username) public view returns(uint256) {
-        return students[username].totalPoints;
+    function get_minor(uint256 id) public view returns(string memory) {
+        return students[id].minor;
     }
 
-    function get_remainingPoints(string memory username) public view returns(uint256) {
-        return students[username].remainingPoints;
+    function get_totalPoints(uint256 id) public view returns(uint256) {
+        return students[id].totalPoints;
     }
 
-    function get_modulesBidded(string memory username) public view returns(string[] memory) {
-        return students[username].modulesBidded;
+    function get_remainingPoints(uint256 id) public view returns(uint256) {
+        return students[id].remainingPoints;
     }
 
-    function get_modulePoints(string memory username, string memory module) public view returns(uint256) {
-        return students[username].modulePoints[module];
+    function get_modulePoints(uint256 id, string memory module) public view returns(uint256) {
+        return students[id].modulePoints[module];
     }
     
 }
