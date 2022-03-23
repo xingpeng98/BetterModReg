@@ -40,7 +40,7 @@ contract Module{
 
 // bidderOnly aims to check if the msg.sender is inside the mapping 
     modifier bidderOnly( bytes32 module_code) {
-        require(modules[module_code].student_bidding_points[msg.sender]!=0);
+        require(modules[module_code].student_bidding_points[tx.origin]!=0);
         _;
     }
 
@@ -89,7 +89,7 @@ contract Module{
         }
 
         // Get ranking
-        address sender = msg.sender;
+        address sender = tx.origin;
         uint256 rank=0;
         for(uint i = 0; i < arr.length;  i++) {
             if(arr[i] == sender) {
