@@ -127,16 +127,16 @@ contract Module{
 
 
 
-    function add_student(address student, uint256 bids , bytes module_code) public {
+    function add_student(address student, uint256 bids , bytes32 module_code) public {
 
-        modules[module_code].student_bidding_points[address]=bids;
-        bidders.push(student);
+        modules[module_code].student_bidding_points[student]=bids;
+        modules[module_code].bidders.push(student);
 
     }
 
-    function remove_student(address student, uint256 bids , bytes module_code) public {
+    function remove_student(address student,  bytes32 module_code) public {
 
-        modules[module_code].student_bidding_points[address]=0;
+        modules[module_code].student_bidding_points[student]=0;
        
 
     }
