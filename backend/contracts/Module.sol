@@ -1,15 +1,15 @@
-pragma solidity ^0.5.0;
+pragma solidity ^0.6.0;
 
+import"./BiddingMap.sol";
 contract Module{
+
+     BiddingMap mapping_contract;
 
 
     struct module{
         bytes32 module_code;
-        bytes32 module_name;
         bytes32 major;
         uint256 student_quota;
-        mapping(address => uint256) student_bidding_points;
-        address[] bidders;
     }
 
 
@@ -18,20 +18,23 @@ contract Module{
 
     uint256 public numModules = 0;
 
+    constructor(BiddingMap bidding_map_address) public {
+        mapping_contract = bidding_map_address;
+        
+        
+    }
+
     function add(
         bytes32 module_code,
-        bytes32 module_name,
-        bytes32 major
+        bytes32 major,
+        uint256 quota
     ) public returns(bytes32) {
     
-        address[] memory bidders;
 
         module memory newModule = module(
             module_code,
-            module_name,
             major,
-            100,  //temporary quota number 
-            bidders
+            quota 
         );
 
         numModules++;
@@ -41,7 +44,8 @@ contract Module{
 
 // bidderOnly aims to check if the msg.sender is inside the mapping 
     modifier bidderOnly( bytes32 module_code) {
-        require(modules[module_code].student_bidding_points[msg.sender]!=0, "Student did not bid for this module");
+        uint256 bids = mapping_contract.getStudentBid(tx.origin,module_code);
+        require(bids!=0, "Student did not bid for this module");
         _;
     }
 
@@ -49,10 +53,14 @@ contract Module{
 
         uint256 minBids = 1000;
 
+        address[] memory students=mapping_contract.getModStudents(module_code);
 
-        for(uint i = 0; i < modules[module_code].bidders.length;  i++) {
-            address bidder = modules[module_code].bidders[i];
-            uint256 bids = modules[module_code].student_bidding_points[bidder];
+
+
+
+        for(uint i = 0; i < students.length;  i++) {
+            address bidder = students[i];
+            uint256 bids = mapping_contract.getStudentBid(bidder, module_code);
 
             if(bids < minBids) {
                 
@@ -68,34 +76,34 @@ contract Module{
     function get_ranking(bytes32 module_code) internal view bidderOnly(module_code) returns (uint256){
 
 
-        uint256 l = modules[module_code].bidders.length;
-        address[] memory arr = new address[](l);
-        //Populate temporary arr of student address
 
-        for(uint i=0;i<l;i++){
-            arr[i] = modules[module_code].bidders[i];
-        }
+        address[] memory students = mapping_contract.getModStudents(module_code);
+       
+
+        
         // Sort ranking 
-        for(uint i =0;i<l;i++){
-            for(uint j =i+1;j<l;j++){
-                address bidder_i = arr[i];
-                address bidder_j = arr[j];
-                if(modules[module_code].student_bidding_points[bidder_i] > modules[module_code].student_bidding_points[bidder_j])
+        for(uint i =0;i<students.length;i++){
+            for(uint j =i+1;j< students.length ;j++){
+                address bidder_i = students[i];
+                address bidder_j = students[j];
+                uint256 i_bids=mapping_contract.getStudentBid(bidder_i,module_code);
+                uint256 j_bids=mapping_contract.getStudentBid(bidder_j,module_code);
+                if( i_bids < j_bids)
                 {
-                    address temp= arr[j];
-                    arr[j]=arr[i];
-                    arr[i] = temp;
+                    address temp= students[j];
+                    students[j]=students[i];
+                    students[i] = temp;
 
                 }
 
             }
         }
         // Get ranking
-        address sender = msg.sender;
+        address sender = tx.origin;
         uint256 rank=0;
 
-        for(uint i = 0; i < arr.length;  i++) {
-            if(arr[i] == sender) {
+        for(uint i = 0; i < students.length;  i++) {
+            if(students[i] == sender) {
                 
                 rank=i;
             }
@@ -127,42 +135,12 @@ contract Module{
 
 
 
-    function add_student(address student, uint256 bids , bytes32 module_code) public {
 
-        modules[module_code].student_bidding_points[student]=bids;
-        modules[module_code].bidders.push(student);
 
-    }
-
-    function remove_student(address student,  bytes32 module_code) public {
-
-        modules[module_code].student_bidding_points[student]=0;
-       
-
-    }
-
-    function getModuleName( bytes32 module_code) public view returns (bytes32) {
-        return modules[module_code].module_name;
-    }
 
     function getModuleQuota( bytes32 module_code) public view returns (uint256) {
         return modules[module_code].student_quota;
     }
-
-
-
-  
-
-
-
-
-    
-
-
-    
-
-
-
 
 
 
