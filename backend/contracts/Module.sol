@@ -7,14 +7,14 @@ contract Module{
 
 
     struct module{
-        bytes32 module_code;
+        uint256 module_code;
         bytes32 major;
         uint256 student_quota;
     }
 
 
 
-    mapping(bytes32 => module) public modules;
+    mapping(uint256 => module) public modules;
 
     uint256 public numModules = 0;
 
@@ -25,10 +25,10 @@ contract Module{
     }
 
     function add(
-        bytes32 module_code,
+        uint256 module_code,
         bytes32 major,
         uint256 quota
-    ) public returns(bytes32) {
+    ) public returns(uint256) {
     
 
         module memory newModule = module(
@@ -43,13 +43,13 @@ contract Module{
     }
 
 // bidderOnly aims to check if the msg.sender is inside the mapping 
-    modifier bidderOnly( bytes32 module_code) {
+    modifier bidderOnly(uint256 module_code) {
         uint256 bids = mapping_contract.getStudentBid(tx.origin,module_code);
         require(bids!=0, "Student did not bid for this module");
         _;
     }
 
-    function check_minimum_bid(bytes32 module_code) view public bidderOnly(module_code) returns (uint256){
+    function check_minimum_bid(uint256 module_code) view public bidderOnly(module_code) returns (uint256){
 
         uint256 minBids = 1000;
 
@@ -73,7 +73,7 @@ contract Module{
     }
 
   // Get ranking in a module. 
-    function get_ranking(bytes32 module_code) internal view bidderOnly(module_code) returns (uint256){
+    function get_ranking(uint256 module_code) internal view bidderOnly(module_code) returns (uint256){
 
 
 
@@ -115,7 +115,7 @@ contract Module{
 
     // get ranking for multiple modules
 
-    function check_ranking(bytes32[] memory selected_modules)  public view returns(uint256[] memory, bytes32[] memory){
+    function check_ranking(uint256[] memory selected_modules)  public view returns(uint256[] memory, uint256[] memory){
 
         uint256 l = selected_modules.length;
         uint256[] memory rankings = new uint256[](l);
@@ -133,19 +133,11 @@ contract Module{
 
     }
 
-
-
-
-
-
-    function getModuleQuota( bytes32 module_code) public view returns (uint256) {
-        return modules[module_code].student_quota;
+    function get_numModules() public view returns(uint256) {
+        return numModules;
     }
 
-
-
-
-
+    function getModuleQuota(uint256 module_code) public view returns (uint256) {
+        return modules[module_code].student_quota;
+    }
 }
-
-
