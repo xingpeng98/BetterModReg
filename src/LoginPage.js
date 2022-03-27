@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Input, Form } from "semantic-ui-react";
-import Layout from "./components/Layout";
 
 class LoginPage extends Component {
   constructor(props) {
@@ -43,35 +42,33 @@ class LoginPage extends Component {
     console.log(this.state.username);
 
     return (
-      <Layout>
-        <div className="LoginPage" style={{ marginTop: "20px" }}>
-          <div class="ui huge header">Login</div>
-          <Form name="login" onSubmit={this.loginHandler} id={FormID}>
-            <div class="ui stacked segment">
-              <div class="field">
-                <label>Username</label>
-                <Input
-                  type="text"
-                  placeholder="Username"
-                  onChange={this.usernameHandler}
-                />
-              </div>
-              <div class="field">
-                <label>Password</label>
-                <Input
-                  type="password"
-                  placeholder="Password"
-                  onChange={this.passwordHandler}
-                />
-              </div>
+      <div className="LoginPage" style={{ marginTop: "20px" }}>
+        <div class="ui huge header">Login</div>
+        <Form name="login" onSubmit={this.loginHandler} id={FormID}>
+          <div class="ui stacked segment">
+            <div class="field">
+              <label>Username</label>
+              <Input
+                type="text"
+                placeholder="Username"
+                onChange={this.usernameHandler}
+              />
             </div>
-            <Button type="submit" Form={FormID}>
-              Log In
-            </Button>
-          </Form>
-          <div id="output"></div>
-        </div>
-      </Layout>
+            <div class="field">
+              <label>Password</label>
+              <Input
+                type="password"
+                placeholder="Password"
+                onChange={this.passwordHandler}
+              />
+            </div>
+          </div>
+          <Button type="submit" Form={FormID}>
+            Log In
+          </Button>
+        </Form>
+        <div id="output"></div>
+      </div>
     );
   }
 }
