@@ -18,6 +18,7 @@ contract Students {
         string minor;
         uint256 totalPoints;
         uint256 remainingPoints;
+        bool firstBid;
         mapping(string => uint256) modulePoints;
     }
     
@@ -49,7 +50,8 @@ contract Students {
             major,
             minor,
             totalPoints,
-            totalPoints
+            totalPoints,
+            true
         );
         
         students[numStudents] = newStudent;
@@ -79,7 +81,11 @@ contract Students {
 
     /** Getters */
     // TODO: Add some form of restriction for all calls
-
+    
+    function check_firstBid(uint256 id) public view returns (bool) {
+        return students[id].firstBid;
+    }
+    
     function get_numStudents() public view returns(uint256) {
         return numStudents;
     }
