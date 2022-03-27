@@ -1,6 +1,6 @@
 pragma solidity ^0.6.0;
 
-import"./BiddingMap.sol";
+import "./BiddingMap.sol";
 contract Module{
 
      BiddingMap mapping_contract;

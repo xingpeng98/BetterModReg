@@ -4,8 +4,6 @@ pragma experimental ABIEncoderV2;
 contract Students {
     
     enum studentState { bidding, notBidding }
-
-    // TODO: Add events for bidding etc.
     
     struct student {
         address addr;
@@ -16,15 +14,12 @@ contract Students {
         uint8 seniority;
         string major;
         string minor;
-        uint256 totalPoints;
-        uint256 remainingPoints;
         bool firstBid;
-        mapping(string => uint256) modulePoints;
     }
     
     uint256 public numStudents = 0;
     mapping(uint256 => student) public students;
-    mapping(string => uint8) public createdStudents;
+    mapping(address => uint8) public createdStudents;
 
     function addStudent(
         string memory name,
@@ -33,11 +28,10 @@ contract Students {
         string memory email,
         uint8 seniority,
         string memory major,
-        string memory minor,
-        uint256 totalPoints
+        string memory minor
     ) public payable {
         // require student not already added
-        require(createdStudents[username] != 0, "Student already added");
+        require(createdStudents[tx.origin] != 0, "Student already added");
 
         // new student object
         student memory newStudent = student(
@@ -49,34 +43,17 @@ contract Students {
             seniority,
             major,
             minor,
-            totalPoints,
-            totalPoints,
             true
         );
         
         students[numStudents] = newStudent;
         numStudents++;
+        createdStudents[tx.origin] = 1;
     }
 
     /** Utility functions */
-    function bidMod(uint256 id, string memory moduleCode, uint256 points) public payable {
-        // rebidding penalty to be checked by modreg system (or i can put a function here 
-        // in this contract to check)
-        require(points < students[id].remainingPoints, "Not enough points");
-        if (students[id].modulePoints[moduleCode] == 0) {
-            students[id].modulePoints[moduleCode] = points;
-            students[id].remainingPoints = students[id].remainingPoints - points;
-        } else {
-            students[id].remainingPoints = students[id].remainingPoints + students[id].modulePoints[moduleCode] - points;
-            students[id].modulePoints[moduleCode] = points;
-        }
-    }
-
-    function unbidMod(uint256 id, string memory moduleCode) public payable {
-        require(students[id].modulePoints[moduleCode] > 0, "Cannot unbid a module that you have not bidded.");
-        students[id].remainingPoints = students[id].remainingPoints + students[id].modulePoints[moduleCode];
-        students[id].modulePoints[moduleCode] = 0;
-
+    function set_firstBid(uint256 id) public payable{
+        students[id].firstBid = false;
     }
 
     /** Getters */
@@ -112,18 +89,6 @@ contract Students {
 
     function get_minor(uint256 id) public view returns(string memory) {
         return students[id].minor;
-    }
-
-    function get_totalPoints(uint256 id) public view returns(uint256) {
-        return students[id].totalPoints;
-    }
-
-    function get_remainingPoints(uint256 id) public view returns(uint256) {
-        return students[id].remainingPoints;
-    }
-
-    function get_modulePoints(uint256 id, string memory module) public view returns(uint256) {
-        return students[id].modulePoints[module];
     }
     
 }
