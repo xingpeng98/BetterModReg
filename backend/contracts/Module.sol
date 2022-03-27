@@ -73,7 +73,7 @@ contract Module{
     }
 
   // Get ranking in a module. 
-    function get_ranking(uint256 module_code) internal view bidderOnly(module_code) returns (uint256){
+    function get_ranking(uint256 module_code) public view bidderOnly(module_code) returns (uint256){
 
 
 

@@ -28,8 +28,8 @@ contract BiddingPoints {
         erc20Contract.mint(msg.sender, amt); 
     }
 
-    function checkCredit() public view returns(uint256) {
-        return erc20Contract.balanceOf(msg.sender); 
+    function checkCredit(address studentAddress) public view returns(uint256) {
+        return erc20Contract.balanceOf(studentAddress); 
     }
 
     function transferCreditFrom(address from, address to, uint256 amt) public {
