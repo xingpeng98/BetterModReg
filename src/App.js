@@ -14,8 +14,12 @@ function App() {
         <Navbar bg="primary" variant="dark">
           <Container>
             <Nav className="me-auto">
-              <Nav.Link href="/">Login</Nav.Link>
-              <Nav.Link href="/profile">Profile</Nav.Link>
+              <Nav.Link href="/" style={{ marginRight: "20px" }}>
+                Login
+              </Nav.Link>
+              <Nav.Link href="/profile" style={{ marginRight: "20px" }}>
+                Profile
+              </Nav.Link>
               <Nav.Link href="/modules">Modules</Nav.Link>
             </Nav>
           </Container>

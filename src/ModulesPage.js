@@ -1,7 +1,7 @@
 import React from "react";
 
 function ModulesPage() {
-  return <h2>Modules Page</h2>;
+  return <h2>Modules</h2>;
 }
 
 export default ModulesPage;
