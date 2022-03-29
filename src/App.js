@@ -8,6 +8,12 @@ import ProfilePage from "./ProfilePage.js";
 import ModulesPage from "./ModulesPage.js";
 
 function App() {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const logOut = async () => {
+    localStorage.removeItem("user");
+  };
+
   return (
     <Layout>
       <Router>
@@ -15,20 +21,26 @@ function App() {
           <Container>
             <Nav className="me-auto">
               <Nav.Link href="/" style={{ marginRight: "20px" }}>
-                Login
-              </Nav.Link>
-              <Nav.Link href="/profile" style={{ marginRight: "20px" }}>
                 Profile
               </Nav.Link>
-              <Nav.Link href="/modules">Modules</Nav.Link>
+              <Nav.Link href="/modules" style={{ marginRight: "20px" }}>
+                Modules
+              </Nav.Link>
+              {user ? (
+                <Nav.Link onClick={logOut} href="/login">
+                  Logout
+                </Nav.Link>
+              ) : (
+                <Nav.Link href="/login">Login</Nav.Link>
+              )}
             </Nav>
           </Container>
         </Navbar>
 
         <Routes>
-          <Route exact path="/profile" element={<ProfilePage />} />
+          <Route exact path="/login" element={<LoginPage />} />
           <Route exact path="/modules" element={<ModulesPage />} />
-          <Route path="/" element={<LoginPage />} />
+          <Route path="/" element={<ProfilePage />} />
         </Routes>
       </Router>
     </Layout>
