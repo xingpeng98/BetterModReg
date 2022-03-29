@@ -18,9 +18,13 @@ const LoginPage = () => {
   const loginHandler = (event) => {
     var output = document.getElementById("output");
     const student_data = require("./student_info.json");
-    student_data.filter((element) => {
-      if (password === element.password && username === element.username) {
-        localStorage.setItem("user", JSON.stringify(element));
+    student_data.filter((student, id) => {
+      if (password === student.password && username === student.username) {
+        const user = {
+          id,
+          student,
+        };
+        localStorage.setItem("user", JSON.stringify(user));
       }
     });
   };
