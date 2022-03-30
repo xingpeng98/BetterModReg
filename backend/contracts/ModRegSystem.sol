@@ -40,7 +40,6 @@ contract ModRegSystem {
         require(roundActive == true, "Bidding has not started yet");
         require(BP.checkCredit(msg.sender) >= points, "Not enough points for bidding"); 
         biddingMapContract.bidMod(msg.sender, mod, points);
-        // Need a boolean for each student whether it's their first bid or not, only allocate bonus if it's their first bid 
         if(studentContract.check_firstBid(id) == true) {
             uint256 time_elapsed = block.timestamp - roundStart; // in seconds
             uint256 bonus_points = bonus - ceil((time_elapsed / 360), 1);
@@ -57,19 +56,19 @@ contract ModRegSystem {
         biddingMapContract.unbidMod(msg.sender, mod);    
     }
 
-    function checkMinimumBid (uint256 mod) public view {
+    function checkMinimumBid (uint256 mod) public view returns (uint256) {
         require(roundActive == true, "Bidding has not started yet");
-        moduleContract.check_minimum_bid(mod);
+        return moduleContract.check_minimum_bid(mod);
     }
 
-    function checkModuleRanking (uint256 mod) public view {
+    function checkModuleRanking (uint256 mod) public view returns (uint256) {
         require(roundActive == true, "Bidding has not started yet");
-        moduleContract.get_ranking(mod); 
+        return moduleContract.get_ranking(mod); 
     }
 
-    function checkAllRankings () public view {
+    function checkAllRankings () public view returns (uint256[] memory, uint256[] memory) {
         require(roundActive == true, "Bidding has not started yet");
-        moduleContract.check_ranking(biddingMapContract.getStudentMods(msg.sender));
+        return moduleContract.check_ranking(biddingMapContract.getStudentMods(msg.sender));
     }
 
     function allocateModules () public ownerOnly {
@@ -86,7 +85,9 @@ contract ModRegSystem {
                     biddingMapContract.removeModByIndex(studentAddress, studentMods[j]);
                 } 
             }
-            BP.transferCreditFrom(address(this), studentAddress, refundPoints);
+            if (refundPoints != 0) {
+                BP.transferCreditFrom(address(this), studentAddress, refundPoints);
+            }
         } 
     }  
 }
