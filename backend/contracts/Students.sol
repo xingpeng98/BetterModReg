@@ -31,7 +31,7 @@ contract Students {
         string memory minor
     ) public payable {
         // require student not already added
-        require(createdStudents[tx.origin] != 0, "Student already added");
+        require(createdStudents[tx.origin] != 1, "Student already added");
 
         // new student object
         student memory newStudent = student(

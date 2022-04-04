@@ -17,6 +17,13 @@ contract ModRegSystem {
     uint256 bonus = 240; // max bonus is 240, with decay of 1 point every 6 minutes    
     bool roundActive = true;
 
+    constructor(Students studentAddress, Module moduleAddress, BiddingMap biddingMapAddress, BiddingPoints bpAddress) public {
+        studentContract = studentAddress;
+        moduleContract = moduleAddress;
+        biddingMapContract = biddingMapAddress;
+        BP = bpAddress; 
+    }
+
     modifier ownerOnly() {
         require(msg.sender == _owner); // Ensure only Modreg System can end round and handle allocation
         _;
@@ -28,7 +35,7 @@ contract ModRegSystem {
         uint256 seniorityPoints = 50; // To be confirmed 
         for (uint i = 0; i < studentContract.get_numStudents(); i++) {
             uint256 pointsAllocated = basePoints + (seniorityPoints * studentContract.get_seniority(i)); // Year 4 gets 1100 points, 3 additional rebids
-            BP.transferCreditFrom(msg.sender, studentContract.get_address(i), pointsAllocated);
+            BP.transferCredit(studentContract.get_address(i), pointsAllocated);
         }
     }
 
