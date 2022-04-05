@@ -39,4 +39,8 @@ contract BiddingPoints {
     function transferCredit(address recipient, uint256 amt) public {
         require(erc20Contract.transfer(recipient, amt), "Failed to transfer");
     }
+
+    function giveAllowance(address recipient, uint256 amt) public {
+        erc20Contract.approve(recipient, amt);
+    }
 }
