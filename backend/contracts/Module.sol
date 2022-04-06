@@ -48,18 +48,40 @@ contract Module{
 
     function check_minimum_bid(uint256 module_code) view public bidderOnly(module_code) returns (uint256){
 
-        uint256 minBids = 1000;
+        uint256 minBids = 0;
 
         address[] memory students=mapping_contract.getModStudents(module_code);
 
-        for(uint i = 0; i < students.length;  i++) {
-            address bidder = students[i];
-            uint256 bids = mapping_contract.getStudentBid(bidder, module_code);
+        //sort ranking
+        for(uint i =0;i<students.length;i++){
+            for(uint j =i+1;j< students.length ;j++){
+                address bidder_i = students[i];
+                address bidder_j = students[j];
+                uint256 i_bids=mapping_contract.getStudentBid(bidder_i,module_code);
+                uint256 j_bids=mapping_contract.getStudentBid(bidder_j,module_code);
+                if( i_bids < j_bids)
+                {
+                    address temp= students[j];
+                    students[j]=students[i];
+                    students[i] = temp;
 
-            if(bids < minBids) {
-                
-                minBids = bids;
+                }
+
             }
+        }
+
+        if(students.length <= modules[module_code].student_quota){
+
+            address min_bidder = students[students.length-1];
+            minBids=mapping_contract.getStudentBid(min_bidder, module_code);
+           
+        }
+        else{
+            address min_bidder = students[modules[module_code].student_quota-1];
+            minBids=mapping_contract.getStudentBid(min_bidder, module_code);
+         
+
+
         }
 
         return minBids;

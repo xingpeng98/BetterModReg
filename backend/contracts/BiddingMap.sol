@@ -6,12 +6,15 @@ contract BiddingMap {
     mapping(address => uint256[]) student_to_mod;
     mapping(uint256 => address[]) mod_to_student;
     address owner = msg.sender;
+    event  bid(address student, uint256 mod, uint256 amt);
+    event unbid(address student, uint256 mod);
 
     // --------------------------- Functions for bidding mod ---------------------------------------
     function bidMod(address student, uint256 mod, uint256 amt) public {
         module_points[student][mod] = amt;
         student_to_mod[student].push(mod);
         mod_to_student[mod].push(student);
+        emit bid(student,mod , amt);
     }
 
     // --------------------------- Functions for unbidding mod ---------------------------------------
@@ -21,6 +24,7 @@ contract BiddingMap {
         removeModByIndex(student, i);
         removeStudentByIndex(mod, j);
         module_points[student][mod] = 0;
+        emit unbid(student,mod);
     }
 
     // Find mod index for the student in student_to_mod mapping
