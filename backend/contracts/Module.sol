@@ -55,9 +55,6 @@ contract Module{
 
         address[] memory students=mapping_contract.getModStudents(module_code);
 
-
-
-
         for(uint i = 0; i < students.length;  i++) {
             address bidder = students[i];
             uint256 bids = mapping_contract.getStudentBid(bidder, module_code);
@@ -75,12 +72,8 @@ contract Module{
   // Get ranking in a module. 
     function get_ranking(uint256 module_code) public view bidderOnly(module_code) returns (uint256){
 
-
-
         address[] memory students = mapping_contract.getModStudents(module_code);
-       
-
-        
+    
         // Sort ranking 
         for(uint i =0;i<students.length;i++){
             for(uint j =i+1;j< students.length ;j++){
@@ -120,7 +113,6 @@ contract Module{
         uint256 l = selected_modules.length;
         uint256[] memory rankings = new uint256[](l);
 
-
          for(uint i = 0; i < selected_modules.length;  i++) {
 
              uint256 rank= get_ranking(selected_modules[i]);
@@ -129,7 +121,6 @@ contract Module{
         }
 
         return (rankings, selected_modules);
-
 
     }
 
