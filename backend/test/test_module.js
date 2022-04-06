@@ -1,4 +1,4 @@
-const _deploy_contracts = require("../migrations/2_deploy_contracts");
+const _deploy_contracts = require("../migrations/2_deploy_contracts_test");
 const truffleAssert = require('truffle-assertions');
 var assert = require('assert');
 
@@ -39,12 +39,8 @@ contract('Module', function(accounts) {
 
 
     it('Test add module', async() => {
-
-        
-        const major = web3.utils.fromAscii('computing', 32)
-
-        let add_mod_1=await moduleInstance.add(1,major, 200, {from: accounts[0]});
-        let add_mod_2=await moduleInstance.add(2,major, 200, {from: accounts[0]});
+        let add_mod_1=await moduleInstance.add(1, 200, {from: accounts[0]});
+        let add_mod_2=await moduleInstance.add(2, 200, {from: accounts[0]});
 
                                                                     
         assert.notStrictEqual(

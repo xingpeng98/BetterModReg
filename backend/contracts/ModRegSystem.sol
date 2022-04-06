@@ -10,12 +10,13 @@ contract ModRegSystem {
     BiddingMap biddingMapContract;
     BiddingPoints BP; 
     address _owner = msg.sender;
-    uint256 roundStart = block.timestamp;  
-    uint256 roundEnd = roundStart + 1 days; 
+    uint256 roundStart = block.timestamp; // Use this for live deployment only 
+    // uint256 roundEnd = roundStart + 1 days; Use this for live deployment only
     uint256 penalty = 50; 
     // Account for bonus point in bidding
     uint256 bonus = 240; // max bonus is 240, with decay of 1 point every 6 minutes    
-    bool roundActive = true;
+    bool roundActive = false; // for developmental testing
+    bool roundEnd = false; 
 
     constructor(Students studentAddress, Module moduleAddress, BiddingMap biddingMapAddress, BiddingPoints bpAddress) public {
         studentContract = studentAddress;
@@ -29,7 +30,7 @@ contract ModRegSystem {
         _;
     }
 
-    // Allocate points to all student accounts  
+    // Allocate points to all student accounts, start round 1  
     function allocatePoints() public ownerOnly { 
         uint256 basePoints = 900; 
         uint256 seniorityPoints = 50; // To be confirmed 
@@ -38,6 +39,7 @@ contract ModRegSystem {
             BP.transferCredit(studentContract.get_address(i), pointsAllocated);
             BP.giveAllowance(studentContract.get_address(i), bonus);
         }
+        roundActive = true;
     }
 
     function ceil(uint a, uint m) public pure returns (uint) {
@@ -81,15 +83,17 @@ contract ModRegSystem {
     }
 
     function checkAllocatedModules() public view returns (uint256[] memory) {
+        require(roundEnd == true, "Bidding round has not started");
         require(roundActive == false, "Bidding round is still in progress");
-        require(block.timestamp >= roundEnd); 
+        // require(block.timestamp >= roundEnd); 
         return biddingMapContract.getStudentMods(msg.sender); 
     }
 
     function allocateModules() public ownerOnly {
         require(roundActive == true, "Bidding has not started yet");
-        require(block.timestamp >= roundEnd); 
+        // require(block.timestamp >= roundEnd); 
         roundActive = false; 
+        roundEnd = true; 
         for (uint i = 0; i < studentContract.get_numStudents(); i++) {
             address studentAddress = studentContract.get_address(i);
             uint256[] memory studentMods = biddingMapContract.getStudentMods(studentAddress);
@@ -101,7 +105,7 @@ contract ModRegSystem {
                 } 
             }
             if (refundPoints != 0) {
-                BP.transferCreditFrom(address(this), studentAddress, refundPoints);
+                BP.transferCredit(studentAddress, refundPoints);
             }
         } 
     }  
