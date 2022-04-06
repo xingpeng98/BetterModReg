@@ -8,7 +8,6 @@ contract Module{
 
     struct module{
         uint256 module_code;
-        bytes32 major;
         uint256 student_quota;
     }
 
@@ -26,14 +25,12 @@ contract Module{
 
     function add(
         uint256 module_code,
-        bytes32 major,
         uint256 quota
     ) public returns(uint256) {
     
 
         module memory newModule = module(
             module_code,
-            major,
             quota 
         );
 
@@ -98,7 +95,7 @@ contract Module{
         for(uint i = 0; i < students.length;  i++) {
             if(students[i] == sender) {
                 
-                rank=i;
+                rank = (i + 1);
             }
         }
 

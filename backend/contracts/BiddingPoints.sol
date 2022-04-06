@@ -14,7 +14,7 @@ contract BiddingPoints {
         ERC20 e = new ERC20(); // Create new ERC20 contract instance 
         erc20Contract = e; // point to new instance 
         owner = msg.sender; 
-        supplyLimit = 10000; 
+        supplyLimit = 20000; 
     }
 
     modifier ownerOnly() {
@@ -23,8 +23,8 @@ contract BiddingPoints {
     }
 
     function getCredit() public payable ownerOnly {
-        uint256 amt = msg.value / 1000000000000000; // 10ETH required to mint max points
-        require(erc20Contract.totalSupply() + amt < supplyLimit, "BP supply is not enough");
+        uint256 amt = msg.value / 100000000000000; // 2ETH required to mint max points
+        require(erc20Contract.totalSupply() + amt <= supplyLimit, "BP supply is not enough");
         erc20Contract.mint(msg.sender, amt); 
     }
 
@@ -34,5 +34,13 @@ contract BiddingPoints {
 
     function transferCreditFrom(address from, address to, uint256 amt) public {
         erc20Contract.transferFrom(from, to, amt);
+    }
+
+    function transferCredit(address recipient, uint256 amt) public {
+        require(erc20Contract.transfer(recipient, amt), "Failed to transfer");
+    }
+
+    function giveAllowance(address recipient, uint256 amt) public {
+        erc20Contract.approve(recipient, amt);
     }
 }
