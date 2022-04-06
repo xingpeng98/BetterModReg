@@ -1,7 +1,7 @@
 import React from "react";
 
 function ModulesPage() {
-  const modules = require("./module_info_soc_short.json");
+  const modules = require("./module_info_soc.json");
   console.log(modules);
 
   const user = JSON.parse(localStorage.getItem("user"));
@@ -23,7 +23,10 @@ function ModulesPage() {
               <p>{module.moduleCode}</p>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <p>Vacancy: {module.vacancy}</p>
-                <button>Bid</button>
+                <div>
+                  {/* <input type="number"></input> */}
+                  <button>Bid</button>
+                </div>
               </div>
             </div>
           </div>

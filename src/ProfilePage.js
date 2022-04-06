@@ -2,12 +2,13 @@ import React from "react";
 
 function ProfilePage() {
   const user = JSON.parse(localStorage.getItem("user"));
-  const { student, id } = user;
+  const { student, id } = { ...user };
 
   const keys = require("./keys.json");
   const address = Object.keys(keys.addresses)[id];
   console.log(keys);
   console.log(address);
+  console.log(keys.addresses[address]);
 
   return (
     <div>
