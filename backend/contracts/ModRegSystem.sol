@@ -10,8 +10,8 @@ contract ModRegSystem {
     BiddingMap biddingMapContract;
     BiddingPoints BP; 
     address _owner = msg.sender;
-    uint256 roundStart = block.timestamp; // Use this for live deployment only 
-    // uint256 roundEnd = roundStart + 1 days; Use this for live deployment only
+    uint256 roundStart = block.timestamp; 
+    // uint256 roundEnd = roundStart + 1 days; // Use this for live deployment only
     uint256 penalty = 50; 
     // Account for bonus point in bidding
     uint256 bonus = 240; // max bonus is 240, with decay of 1 point every 6 minutes    
@@ -51,6 +51,7 @@ contract ModRegSystem {
         require(BP.checkCredit(msg.sender) >= points, "Not enough points for bidding"); 
         biddingMapContract.bidMod(msg.sender, mod, points);
         BP.transferCredit(_owner, points);
+        
         if(studentContract.check_firstBid(id) == true) {
             uint256 time_elapsed = block.timestamp - roundStart; // in seconds
             uint256 bonus_points = bonus - ceil((time_elapsed / 360), 1);
