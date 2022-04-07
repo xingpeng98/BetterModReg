@@ -1,11 +1,9 @@
 pragma solidity ^0.6.0;
 
 import "./ERC20.sol";
-import "./Students.sol";
 
 contract BiddingPoints {
     ERC20 erc20Contract;
-    Students studentContract;
     uint256 supplyLimit;
     uint256 currentSupply;
     address owner; 
