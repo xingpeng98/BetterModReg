@@ -35,21 +35,22 @@ function ProfilePage() {
         // add student to blockchain 
       }).then()
     } else {
-      setErrorMessage('Install Metamask');
+      setErrorMessage("Install Metamask");
     }
-  }
+  };
 
   const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount);
     getUserBalance(newAccount);
-  }
+  };
 
   const getUserBalance = (address) => {
-    window.ethereum.request({method: 'eth_getBalance', params: [address, 'latest']})
-    .then(balance => {
-      setUserBalance(ethers.utils.formatEther(balance));
-    })
-  }
+    window.ethereum
+      .request({ method: "eth_getBalance", params: [address, "latest"] })
+      .then((balance) => {
+        setUserBalance(ethers.utils.formatEther(balance));
+      });
+  };
 
   const addStudent = async(address) => {
     Student.methods.addStudent(student.student_name, student.username, student.password, student.email, 4, student.major, student.minor).send({from: address});
@@ -60,7 +61,7 @@ function ProfilePage() {
   return (
     <div>
       <h2>Profile</h2>
-      {user ? (
+      {user && user.id != 0 ? (
         <div>
           <h4>Name: {student.student_name}</h4>
           <h4>Username: {student.username}</h4>
@@ -74,10 +75,13 @@ function ProfilePage() {
           <h4>Balance: {userBalance} </h4>
           <h4>Number of Students: {studentNumber} </h4>
         </div>
-        
-      ) : (
-        <p>Not logged in yet!</p>
-      )}
+      ) : null}
+      {user && user.id == 0 ? (
+        <div>
+          <h4>You are admin</h4>
+        </div>
+      ) : null}
+      {!user ? <h4>Not logged in yet!</h4> : null}
       {errorMessage}
     </div>
   );
