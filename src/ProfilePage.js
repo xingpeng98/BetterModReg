@@ -53,7 +53,12 @@ function ProfilePage() {
   };
 
   const addStudent = async(address) => {
-    Student.methods.addStudent(student.student_name, student.username, student.password, student.email, 4, student.major, student.minor).send({from: address});
+    window.ethereum
+      .request({method: 'eth_sendTransaction', params: [address]})
+      .then(() => {
+        Student.methods.addStudent(student.student_name, student.username, student.password, student.email, 4, student.major, student.minor).send({from: address});
+      })
+    //Student.methods.addStudent(student.student_name, student.username, student.password, student.email, 4, student.major, student.minor).send({from: address});
     const num = await Student.methods.get_numStudents().call()
     getStudentNumber(num);
   }

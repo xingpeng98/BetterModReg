@@ -22,7 +22,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "concurrently \"ganache-cli --account_keys_path src/keys.json\" \"yarn react-scripts start\"",
+    "start": "concurrently \"ganache-cli --allowUnlimitedContractSize  --gasLimit 0xFFFFFFFFFFFF --account_keys_path src/keys.json\" \"yarn react-scripts start\"",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
