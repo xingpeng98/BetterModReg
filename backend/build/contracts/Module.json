@@ -34,8 +34,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -48,8 +47,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -92,8 +90,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -112,8 +109,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -137,8 +133,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [],
@@ -151,8 +146,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -171,8 +165,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     }
   ],
   "metadata": "{\"compiler\":{\"version\":\"0.6.4+commit.1dca32f3\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"contract BiddingMap\",\"name\":\"bidding_map_address\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"constructor\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"module_code\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"quota\",\"type\":\"uint256\"}],\"name\":\"add\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"module_code\",\"type\":\"uint256\"}],\"name\":\"check_minimum_bid\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256[]\",\"name\":\"selected_modules\",\"type\":\"uint256[]\"}],\"name\":\"check_ranking\",\"outputs\":[{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"},{\"internalType\":\"uint256[]\",\"name\":\"\",\"type\":\"uint256[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"module_code\",\"type\":\"uint256\"}],\"name\":\"getModuleQuota\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"get_numModules\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"module_code\",\"type\":\"uint256\"}],\"name\":\"get_ranking\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"name\":\"modules\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"module_code\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"student_quota\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"numModules\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"methods\":{}},\"userdoc\":{\"methods\":{}}},\"settings\":{\"compilationTarget\":{\"project:/contracts/Module.sol\":\"Module\"},\"evmVersion\":\"istanbul\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/contracts/BiddingMap.sol\":{\"keccak256\":\"0x5e94259a6075506876725b062b433329c8dcc278d21ce0dabd6d2862bd7a34dc\",\"urls\":[\"bzz-raw://0d8676af026b0cc7af58b2920aced7728b8f03846e4c4b58c0c7819c04b6c450\",\"dweb:/ipfs/Qmejr5fcx4XHKF3PVyHzmuDgmJheykosGzFed9er6hVRRm\"]},\"project:/contracts/Module.sol\":{\"keccak256\":\"0xcfea1771833a36c80cc3666f5cde2c75f92bede1366b76e7334df731d0be9d24\",\"urls\":[\"bzz-raw://1d20452c07fa9517714b8f987f6ea05facebcc105a328e81ba1c705e047d4a88\",\"dweb:/ipfs/QmewDzwAPGWr6fU6gEyqrwmDhabEGYKgumTEyekRtWEtxr\"]}},\"version\":1}",
@@ -13159,8 +13152,7 @@
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-04-11T04:47:41.992Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-04-11T08:08:04.801Z",
   "devdoc": {
     "methods": {}
   },

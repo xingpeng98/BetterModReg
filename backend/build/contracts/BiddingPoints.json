@@ -11,8 +11,7 @@
       "name": "getCredit",
       "outputs": [],
       "stateMutability": "payable",
-      "type": "function",
-      "payable": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -31,8 +30,7 @@
         }
       ],
       "stateMutability": "view",
-      "type": "function",
-      "constant": true
+      "type": "function"
     },
     {
       "inputs": [
@@ -3955,8 +3953,7 @@
     }
   },
   "schemaVersion": "3.4.4",
-  "updatedAt": "2022-04-11T04:47:41.980Z",
-  "networkType": "ethereum",
+  "updatedAt": "2022-04-11T08:08:04.743Z",
   "devdoc": {
     "methods": {}
   },
