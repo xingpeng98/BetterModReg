@@ -14,7 +14,7 @@ const LoginPage = () => {
     async function logIn() {
       if (loggedIn) {
         await delay(1000);
-        return navigate("/");
+        return navigate("/profile");
       }
     }
     logIn();
