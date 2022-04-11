@@ -8,6 +8,59 @@ import ProfilePage from "./ProfilePage.js";
 import ModulesPage from "./ModulesPage.js";
 
 function App() {
+  const Web3 = require('web3');
+  var web3 = new Web3();
+  /* const load = async () => {
+    await loadWeb3()
+    await loadAccount()
+    //await App.loadContract()
+    //await App.render()
+  };
+
+  load()
+
+  const loadWeb3 = async () => {
+    const {ethereum} = window;
+    
+    if (!ethereum) {
+      console.log("Make sure you have Metamask installed!");
+      return;
+    } else {
+      console.log("Wallet exists! We're ready to go!")
+    }
+
+    const accounts = await ethereum.request({ method: 'eth_accounts' });
+
+    if (accounts.length !== 0) {
+      const account = accounts[0];
+      console.log("Found an authorized account: ", account);
+      setCurrentAccount(account);
+    } else {
+      console.log("No authorized account found");
+    }
+  }
+
+  
+
+
+  const loadAccount = async () => {
+    // Set the current blockchain account
+    App.account = web3.eth.accounts[0]
+    console.log(App.account)
+  };
+  */
+  
+
+  // const loadContract = async () => {
+  //   // Create a JavaScript version of the smart contract
+  //   const mrs = await $.getJSON('ModRegSystem.json')
+  //   App.contracts.mrs = TruffleContract(mrs)
+  //   App.contracts.mrs.setProvider(App.web3Provider)
+
+  //   // Hydrate the smart contract with values from the blockchain
+  //   App.mrs = await App.contracts.mrs.deployed()
+  // };
+
   const user = JSON.parse(localStorage.getItem("user"));
 
   const logOut = async () => {
