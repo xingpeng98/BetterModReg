@@ -62,7 +62,7 @@ contract ModRegSystem {
 
     function cancelBid (uint256 mod) public {
         require(roundActive == true, "Bidding has not started yet");
-        require((biddingMapContract.getStudentBid(msg.sender, mod) - penalty) > 0, "Not enough points to cancel bid!");
+        require((biddingMapContract.getStudentBid(msg.sender, mod) - penalty) >= 0, "Not enough points to cancel bid!");
         // Penalization 
         BP.transferCredit(_owner, (biddingMapContract.getStudentBid(msg.sender, mod) - penalty));
         biddingMapContract.unbidMod(msg.sender, mod);    
@@ -75,12 +75,12 @@ contract ModRegSystem {
 
     function checkModuleRanking (uint256 mod) public view returns (uint256) {
         require(roundActive == true, "Bidding has not started yet");
-        return moduleContract.get_ranking(mod); 
+        return moduleContract.get_ranking(mod, msg.sender); 
     }
 
     function checkAllRankings() public view returns (uint256[] memory, uint256[] memory) {
         require(roundActive == true, "Bidding has not started yet");
-        return moduleContract.check_ranking(biddingMapContract.getStudentMods(msg.sender));
+        return moduleContract.check_ranking(biddingMapContract.getStudentMods(msg.sender), msg.sender);
     }
 
     function checkAllocatedModules() public view returns (uint256[] memory) {
@@ -95,19 +95,21 @@ contract ModRegSystem {
         // require(block.timestamp >= roundEnd); 
         roundActive = false; 
         roundEnd = true; 
-        for (uint i = 0; i < studentContract.get_numStudents(); i++) {
-            address studentAddress = studentContract.get_address(i);
-            uint256[] memory studentMods = biddingMapContract.getStudentMods(studentAddress);
-            uint256 refundPoints = 0;
-            for (uint j = 0; j < studentMods.length; j++) {
-                if (moduleContract.get_ranking(studentMods[j]) > moduleContract.getModuleQuota(studentMods[j])) {
-                    refundPoints += biddingMapContract.getStudentBid(studentAddress, studentMods[j]);
-                    biddingMapContract.removeModByIndex(studentAddress, studentMods[j]);
+        
+        for (uint i = 0; i < moduleContract.get_numModules(); i++) {
+            address[] memory studentAddresses = biddingMapContract.getModStudents(i);
+            for (uint j = 0; j < studentAddresses.length; j++) {
+                uint256 refundPoints = 0;
+                if (moduleContract.get_ranking(i, studentAddresses[j]) > moduleContract.getModuleQuota(i)) {
+                    refundPoints += biddingMapContract.getStudentBid(studentAddresses[j], i);
+                    uint256 moduleIndex = biddingMapContract.find_mod(studentAddresses[j], i);
+                    biddingMapContract.removeModByIndex(studentAddresses[j], moduleIndex);
                 } 
+                if (refundPoints != 0) {
+                    BP.transferCredit(studentAddresses[j], refundPoints);
+                }   
             }
-            if (refundPoints != 0) {
-                BP.transferCredit(studentAddress, refundPoints);
-            }
+            
         } 
     }  
 }

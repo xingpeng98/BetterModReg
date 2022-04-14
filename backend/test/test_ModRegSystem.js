@@ -52,21 +52,10 @@ contract('ModRegSystem', function(accounts) {
         );
     });
 
-    it('Create Student 3', async() => {
-        let createStudent = await studentInstance.addStudent("test3", "test3", "test3", "test3", 3, "CS", "None", {from: accounts[3], value: 1000000000000000000});
-
-        assert.notStrictEqual(
-            createStudent,
-            undefined,
-            "Failed to create student"
-        );
-    });
-
     it('Allocate Bidding Points', async() => {
         await modRegSystemInstance.allocatePoints({from: accounts[0]});
         let checkBP = await biddingPointsInstance.checkCredit(accounts[1]);
         let checkBP2 = await biddingPointsInstance.checkCredit(accounts[2]);
-        let checkBP3 = await biddingPointsInstance.checkCredit(accounts[3]);
 
         assert.strictEqual(
             checkBP.toString(),
@@ -79,30 +68,26 @@ contract('ModRegSystem', function(accounts) {
             '1000',
             'Bidding points were not claimed successfully'
         );
-        
-        assert.strictEqual(
-            checkBP3.toString(),
-            '1050',
-            'Bidding points were not claimed successfully'
-        );
 
     });
 
     it('Check Bonus Points Allocation', async() => {
-        await moduleInstance.add(0, 10, {from: accounts[0]});
-        await modRegSystemInstance.bid(0, 0, 300, {from: accounts[1]});
-        await modRegSystemInstance.bid(1, 0, 250, {from: accounts[2]});
-        await modRegSystemInstance.bid(2, 0, 200, {from: accounts[3]});
+        await moduleInstance.add(0, 1, {from: accounts[0]});
+        await moduleInstance.add(1, 1, {from: accounts[0]});
+        await modRegSystemInstance.bid(0, 0, 500, {from: accounts[1]});
+        await modRegSystemInstance.bid(1, 0, 300, {from: accounts[2]});
         let checkBP = await biddingPointsInstance.checkCredit(accounts[1]);
 
         assert.strictEqual(
             checkBP.toString(),
-            '890',
+            '690',
             'Bidding points were not claimed successfully'
         );
     });
 
     it('Check Module Bidding & Rank', async() => {
+        await modRegSystemInstance.bid(0, 1, 300, {from: accounts[1]});
+        await modRegSystemInstance.bid(1, 1, 500, {from: accounts[2]});
         let checkModuleRank = await modRegSystemInstance.checkModuleRanking(0, {from: accounts[1]});
 
         assert.strictEqual(
@@ -117,18 +102,25 @@ contract('ModRegSystem', function(accounts) {
 
         assert.strictEqual(
             checkMinBid.toString(),
-            '200',
+            '500',
             'Minimum bid not recorded correctly'
         );
     });
 
     it('Check Allocated Modules', async() => {
         await modRegSystemInstance.allocateModules({from: accounts[0]}); 
-        let checkAllocated = await modRegSystemInstance.checkAllocatedModules({from: accounts[1]});
+        let checkAllocated1 = await modRegSystemInstance.checkAllocatedModules({from: accounts[1]});
+        let checkAllocated2 = await modRegSystemInstance.checkAllocatedModules({from: accounts[2]});
+
+        /*assert.strictEqual(
+            checkAllocated1.toString(),
+            '0',
+            'Module was not allocated correctly'
+        );*/
 
         assert.strictEqual(
-            checkAllocated.toString(),
-            '0',
+            checkAllocated2.toString(),
+            '1',
             'Module was not allocated correctly'
         );
     });

@@ -28,7 +28,7 @@ contract BiddingMap {
     }
 
     // Find mod index for the student in student_to_mod mapping
-    function find_mod(address student, uint256 mod) internal view returns(uint256) {
+    function find_mod(address student, uint256 mod) public view returns(uint256) {
         uint i = 0;
         while (student_to_mod[student][i] != mod) {
             i++;
@@ -47,7 +47,7 @@ contract BiddingMap {
 
     // Remove mod for the student 
     function removeModByIndex(address student, uint256 i) public payable {
-        while (i<student_to_mod[student].length-1) {
+        while (i < student_to_mod[student].length - 1) {
             student_to_mod[student][i] = student_to_mod[student][i+1];
             i++;
         }
