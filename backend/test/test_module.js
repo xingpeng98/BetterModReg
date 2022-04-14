@@ -80,8 +80,4 @@ contract('Module', function(accounts) {
             assert.equal(variable_2, mods, "mods retreived incorrect");
       })
     });
-
-
-
-    
 });

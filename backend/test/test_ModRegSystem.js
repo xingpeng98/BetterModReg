@@ -107,16 +107,17 @@ contract('ModRegSystem', function(accounts) {
         );
     });
 
+    /* Used to check logic for demo purposes
     it('Check Allocated Modules', async() => {
         await modRegSystemInstance.allocateModules({from: accounts[0]}); 
         let checkAllocated1 = await modRegSystemInstance.checkAllocatedModules({from: accounts[1]});
         let checkAllocated2 = await modRegSystemInstance.checkAllocatedModules({from: accounts[2]});
 
-        /*assert.strictEqual(
+        assert.strictEqual(
             checkAllocated1.toString(),
             '0',
             'Module was not allocated correctly'
-        );*/
+        );
 
         assert.strictEqual(
             checkAllocated2.toString(),
@@ -124,5 +125,6 @@ contract('ModRegSystem', function(accounts) {
             'Module was not allocated correctly'
         );
     });
+    */
 
 })
