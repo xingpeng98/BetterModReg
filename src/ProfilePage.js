@@ -65,7 +65,6 @@ function ProfilePage() {
           <button onClick={connectWalletHandler}>Connect Wallet</button>
           <h4>Address: {defaultAccount}</h4>
           <h4>Balance: {userBalance} </h4>
-          <h4>Increment Number: {studentNumber} </h4>
         </div>
       ) : null}
       {user && user.id == 0 ? (
