@@ -93,7 +93,7 @@ contract Module{
     }
 
   // Get ranking in a module. 
-    function get_ranking(uint256 module_code) public view bidderAndOwnerOnly(module_code) returns (uint256){
+    function get_ranking(uint256 module_code, address student_address) public view bidderAndOwnerOnly(module_code) returns (uint256){
 
         address[] memory students = mapping_contract.getModStudents(module_code);
 
@@ -115,7 +115,7 @@ contract Module{
             }
         }
         // Get ranking
-        address sender = tx.origin;
+        address sender = student_address;
         uint256 rank=0;
 
         for(uint i = 0; i < students.length;  i++) {
@@ -131,14 +131,14 @@ contract Module{
 
     // get ranking for multiple modules
 
-    function check_ranking(uint256[] memory selected_modules)  public view returns(uint256[] memory, uint256[] memory){
+    function check_ranking(uint256[] memory selected_modules, address student_address)  public view returns(uint256[] memory, uint256[] memory){
 
         uint256 l = selected_modules.length;
         uint256[] memory rankings = new uint256[](l);
 
          for(uint i = 0; i < selected_modules.length;  i++) {
 
-             uint256 rank= get_ranking(selected_modules[i]);
+             uint256 rank= get_ranking(selected_modules[i], student_address);
              rankings[i] = rank;
     
         }

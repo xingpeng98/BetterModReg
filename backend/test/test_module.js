@@ -73,15 +73,11 @@ contract('Module', function(accounts) {
         
         const ranking=[1,0]
         const mods= [1,2]
-        moduleInstance.check_ranking(mods, {from: accounts[1]}).then(function(res){
+        moduleInstance.check_ranking(mods, accounts[1], {from: accounts[1]}).then(function(res){
             var variable_1 = res[0];
             var variable_2 = res[1];
             assert.equal(variable_1, ranking, "rankings incorrect");
             assert.equal(variable_2, mods, "mods retreived incorrect");
       })
     });
-
-
-
-    
 });
